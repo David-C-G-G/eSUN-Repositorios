@@ -1,3 +1,5 @@
+import 'package:esun/config/config.dart';
+import 'package:esun/presentacion/screens.dart';
 import 'package:flutter/material.dart';
 
 void main(){
@@ -9,13 +11,10 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:  Scaffold(
-        body: Center(
-          child: Text('Hola'),
-        ),
-      ),
+      theme: AppTheme(selectedColor: 5, isDarkmode: false).getTheme(),
+      home: const HomeScreen()
     );
   }
 }
