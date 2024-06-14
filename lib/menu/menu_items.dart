@@ -16,12 +16,12 @@ class MenuItems {
 
 }
 
-const appMenuItmos = <MenuItems>[
+const appMenuItems = <MenuItems>[
 
   MenuItems(
     title: 'Botones', 
     subTitle: 'Varios botones en Flutter', 
-    link: '/', 
+    link: '/buttons', 
     icon: Icons.smart_button_outlined,
   ),
 
