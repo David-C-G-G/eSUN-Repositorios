@@ -12,7 +12,8 @@ final appRouter = GoRouter(routes:[
   ),
 
   GoRoute(
-    path: ButtonsScreen.name,
+    name: ButtonsScreen.name,
+    path: '/buttons',
     builder: (context, state) => const ButtonsScreen(),
   ),
 
