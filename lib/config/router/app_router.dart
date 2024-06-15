@@ -12,14 +12,14 @@ final appRouter = GoRouter(routes:[
   ),
 
   GoRoute(
-    name: ButtonsScreen.name,
-    path: '/buttons',
-    builder: (context, state) => const ButtonsScreen(),
+    name: LoginScreen.name,
+    path: '/login',
+    builder: (context, state) => const LoginScreen(),
   ),
 
   GoRoute(
     name: RegisterScreen.name,
-    path: '/formularios',
+    path: '/register',
     builder: (context, state) => const RegisterScreen(),
   ),
 

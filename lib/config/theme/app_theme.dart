@@ -14,6 +14,7 @@ const colorList = <Color>[
   Colors.pink,
   Colors.purple,
   Colors.yellow,
+  
 
 ];
 
@@ -22,6 +23,7 @@ class AppTheme {
 
   final bool isDarkmode;
   final int selectedColor;
+
 
   AppTheme({
     this.isDarkmode = false,
