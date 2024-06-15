@@ -18,11 +18,13 @@ class RegisterCubit extends Cubit<RegisterFormState> {
         userName: Username.dirty( value: state.userName.value ),
         password: Password.dirty( value: state.password.value ),
         email   : Email.dirty(value: state.email.value),
+        cedula  : Cedula.dirty(value: state.cedula.value) ,
 
         isValid: Formz.validate([
           state.userName,
           state.email,
           state.password,
+          state.cedula
         ])
       )
     );
@@ -33,7 +35,7 @@ class RegisterCubit extends Cubit<RegisterFormState> {
   }
 
 
-  void userName( String value){
+  void userName( String value ){
 
     final username = Username.dirty(value: value);
 
@@ -41,33 +43,45 @@ class RegisterCubit extends Cubit<RegisterFormState> {
     emit(
       state.copyWith(
         userName: username,
-        isValid: Formz.validate([username, state.email, state.password]),
+        isValid: Formz.validate([username, state.email, state.password, state.cedula]),
       )
     );
   }
 
 
-  void email( String value){
+  void email( String value ){
 
     final email = Email.dirty(value: value);
 
     emit(
       state.copyWith(
         email: email,
-        isValid: Formz.validate([email, state.userName, state.password])
+        isValid: Formz.validate([email, state.userName, state.password, state.cedula])
       )
     );
   }
 
 
-  void password( String value){
+  void password( String value ){
 
     final password = Password.dirty(value: value);
 
     emit(
       state.copyWith(
         password: password,
-        isValid: Formz.validate([password, state.userName, state.email])
+        isValid: Formz.validate([password, state.userName, state.email, state.cedula])
+      )
+    );
+  }
+
+  void cedula( String value ){
+
+    final cedula = Cedula.dirty(value: value);
+
+    emit(
+      state.copyWith(
+        cedula: cedula,
+        isValid: Formz.validate([cedula, state.userName, state.email, state.password])
       )
     );
   }

@@ -48,7 +48,7 @@ class CustomFormField extends StatelessWidget {
       onChanged: onChanged,
       validator: validator,
       obscureText: obscureText == null ? false : obscureText!,
-      style: TextStyle(color: ColorsThemeText.getColorFor(color == null ? 'yellow': color!)),
+      style: TextStyle(color: ColorsThemeText.getColorFor(color == null ? 'yellow': color!), fontSize: 20),
       decoration: InputDecoration(
         border: border,
         focusedBorder: border,

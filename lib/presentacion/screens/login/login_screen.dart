@@ -79,7 +79,7 @@ class _LoginFormField extends StatelessWidget {
           const SizedBox(height: 20,),
 
           CustomFormField(
-            label: 'password ',
+            label: 'password',
             obscureText: true,
             onChanged: registerCubit.password,
             color: 'blanco',
@@ -92,10 +92,12 @@ class _LoginFormField extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               CustomButton(
-                texto: 'Iniciar Sesión',
-                onTap: (){
-                  registerCubit.onSubmit();
-                },
+                texto: (username.isNotValid || password.isNotValid) 
+                  ? 'Deshabilitado'
+                  : 'Iniciar Sesión',
+                onTap: username.isNotValid || password.isNotValid 
+                  ? null
+                  : () => registerCubit.onSubmit(),
               ),
 
               CustomButton(
