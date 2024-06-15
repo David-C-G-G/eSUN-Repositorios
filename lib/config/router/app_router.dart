@@ -17,4 +17,10 @@ final appRouter = GoRouter(routes:[
     builder: (context, state) => const ButtonsScreen(),
   ),
 
+  GoRoute(
+    name: RegisterScreen.name,
+    path: '/formularios',
+    builder: (context, state) => const RegisterScreen(),
+  ),
+
 ]);

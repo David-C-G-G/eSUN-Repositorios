@@ -1,4 +1,4 @@
-import 'package:esun/menu/menu_items.dart';
+// import 'package:esun/menu/menu_items.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -27,39 +27,64 @@ class _HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
 
 
-    return ListView.builder(
-      itemCount: appMenuItems.length,
-      itemBuilder: (context, index){
 
-        final menuItem = appMenuItems[index];
-
-        return _CustomListTile(menuItem: menuItem);
-      } ,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          ListTile(
+            title: const Text('Formulario'),
+            subtitle: const Text('Manejo de formularios'),
+            trailing: const Icon(Icons.arrow_forward_ios_rounded),
+            onTap: () => context.push('/formularios'),
+          ),
+        ],
+      ),
     );
+
+    // return ListView.builder(
+    //   itemCount: appMenuItems.length,
+    //   itemBuilder: (context, index){
+
+    //     final menuItem = appMenuItems[index];
+
+    //     return _CustomListTile(menuItem: menuItem);
+    //   } ,
+    // );
   }
 }
 
-class _CustomListTile extends StatelessWidget {
-  const _CustomListTile({
-    required this.menuItem,
-  });
+// class _CustomListTile extends StatelessWidget {
+//   const _CustomListTile({
+//     required this.menuItem,
+//   });
 
-  final MenuItems menuItem;
+//   final MenuItems menuItem;
 
-  @override
-  Widget build(BuildContext context) {
+//   @override
+//   Widget build(BuildContext context) {
 
     
-    final colors = Theme.of(context).colorScheme;
+//     final colors = Theme.of(context).colorScheme;
 
-    return ListTile(
-      leading: Icon(menuItem.icon, color: colors.primary,),
-      trailing: Icon(Icons.arrow_circle_right, color:colors.primary,),
-      title: Text(menuItem.title),
-      subtitle: Text(menuItem.subTitle),
-      onTap: () {
-        context.push( menuItem.link );
-      },
-    );
-  }
-}
+//     return SingleChildScrollView(
+//       child: Column(
+//         children: [
+//           ListTile(
+//             leading: Icon(menuItem.icon, color: colors.primary,),
+//             trailing: Icon(Icons.arrow_circle_right, color:colors.primary,),
+//             title: Text(menuItem.title),
+//             subtitle: Text(menuItem.subTitle),
+//             onTap: () => context.push('/buttons'),
+//           ),
+
+//           ListTile(
+//             title: const Text('Formulario'),
+//             subtitle: const Text('Manejo de formularios'),
+//             trailing: const Icon(Icons.arrow_forward_ios_rounded),
+//             onTap: () => context.push('/formularios'),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }

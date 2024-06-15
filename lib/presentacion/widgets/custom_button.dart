@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 class CustomButton extends StatelessWidget {
 
   final String texto;
+  final Function()? onTap;
 
   const CustomButton({
     required this.texto,
+    this.onTap,
     super.key
    });
 
@@ -23,10 +25,10 @@ class CustomButton extends StatelessWidget {
           // focusColor: Colors.amber.shade800,
           // highlightColor: Colors.purpleAccent,
           // hoverColor: Colors.amberAccent,
-          onTap: (){},
+          onTap: onTap,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: Text(texto, style: TextStyle(color: Colors.white),),
+            child: Text(texto, style: const TextStyle(color: Colors.white),),
           ),
         ),
       ),
