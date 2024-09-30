@@ -1,6 +1,6 @@
 
 
-import 'package:esun/presentacion/screens.dart';
+import 'package:esun/presentacion/pantallas.dart';
 import 'package:go_router/go_router.dart';
 
 final appRouter = GoRouter(routes:[
@@ -21,6 +21,24 @@ final appRouter = GoRouter(routes:[
     name: RegisterScreen.name,
     path: '/register',
     builder: (context, state) => const RegisterScreen(),
+  ),
+
+  GoRoute(
+    name: OptionScreen.name,
+    path: '/option',
+    builder: (context, state) => const OptionScreen(),
+  ),
+
+  GoRoute(
+    name: DocentesScreen.name,
+    path: '/docentes',
+    builder: (context, state) => const DocentesScreen(),
+  ),
+
+  GoRoute(
+    name: MateriasScreen.name,
+    path: '/materias',
+    builder: (context, state) => const MateriasScreen(),
   ),
 
 ]);

@@ -1,15 +1,18 @@
-import 'package:esun/presentacion/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({super.key});
+import 'package:esun/presentacion/widgets.dart';
+
+class InicioPantalla extends StatelessWidget {
+
+  static const String name = 'InicioPantalla';
+
+  const InicioPantalla({super.key});
 
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(6, 20, 68, 1),
       body: Center(
         // child: Escudo(),
         child: Container(

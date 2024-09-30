@@ -18,7 +18,6 @@ class Cedula extends FormzInput<String, CedulaError> {
   // Este método fue creado para ser llamado directamente desde donde se usará por ejemplo: username.errorMessage
   String? get errorMessage{
     if( isValid || isPure ) return null;
-
     if( displayError == CedulaError.empty) return 'El campo no puede ser vacío';
     if( displayError == CedulaError.length) return 'La cédula debe contener 7 u 8 caracteres';
 

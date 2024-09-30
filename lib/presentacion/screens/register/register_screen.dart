@@ -1,10 +1,17 @@
+import 'package:esun/infrastructure/inputs.dart';
 import 'package:esun/presentacion/blocs/blocs.dart';
 import 'package:esun/presentacion/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
+// import 'package:mailer/mailer.dart';
+// import 'package:mailer/smtp_server.dart';
 
 class RegisterScreen extends StatelessWidget {
+
+    // final String outlookEmail = 'david.gutierrezgut@alumno.buap.mx';
+    // final String outlookPassword = 'Nokiac3-00';
 
   static const String name = 'RegisterScreen';
 
@@ -12,12 +19,18 @@ class RegisterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => RegisterCubit(),
+    // return BlocProvider(
+    //   create: (_) => RegisterCubit(),
+    //   child: const _RegisterUser(),
+    // );
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: const _RegisterUser(),
     );
   }
 }
+
+// ----------
 
 class _RegisterUser extends StatelessWidget {
 
@@ -27,37 +40,30 @@ class _RegisterUser extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    // final registerCubit = context.watch<RegisterCubit>();
+    // final email    = registerCubit.state.email;
 
-    return const Scaffold(
+
+    return Scaffold(
       backgroundColor: Color.fromRGBO(6, 20, 68, 1),
       body: SafeArea(
         child: Padding(
           // padding: EdgeInsets.symmetric(horizontal: 20, vertical: 100),
-          padding: EdgeInsets.fromLTRB(20, 100, 20, 0),
+          padding: const EdgeInsets.fromLTRB(20, 100, 20, 0),
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
 
 
-                LogoWidget(),
+                const LogoWidget(),
 
                 _RegisterFormField(),
 
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
 
-                // Row(
-                  
-                //   children: [
-                //     SizedBox(child: Text('Eres Docente?', style: TextStyle(color: Colors.white),),),
-                //     _IsDocente(),
-                //   ],
-                // ),
 
-                // SizedBox(child: Text('Eres Docente?', style: TextStyle(color: Colors.white),),),
-                //     _IsDocente(),
-
-                SizedBox(height: 20,),
+                // SizedBox(height: 20,),
 
 
 
@@ -72,7 +78,10 @@ class _RegisterUser extends StatelessWidget {
 
 class _RegisterFormField extends StatelessWidget {
 
-  const _RegisterFormField();
+
+  
+
+  // const _RegisterFormField();
 
   @override
   Widget build(BuildContext context) {
@@ -129,6 +138,9 @@ class _RegisterFormField extends StatelessWidget {
                 texto: 'Registrar',
                 onTap: (){
                   registerCubit.onSubmit();
+                  // print(email.value.toString());
+                  sendMailFromOutlook(email.value.toString());
+                  // registerCubit.sendEmail();
                 },
               ),
 
@@ -156,6 +168,7 @@ class _IsDocente extends StatefulWidget {
 
 class __IsDocenteState extends State<_IsDocente> {
   bool isDocente = false;
+  
 
   void updateValue(bool newValue){
     setState(() {
@@ -168,6 +181,7 @@ class __IsDocenteState extends State<_IsDocente> {
 
     final subRegisterCubit = context.watch<RegisterCubit>();
     final cedula = subRegisterCubit.state.cedula;
+
 
     Size size = MediaQuery.of(context).size;
 
@@ -185,19 +199,22 @@ class __IsDocenteState extends State<_IsDocente> {
           },
         ),
     
-        isDocente 
-          ? SizedBox(
-            height: 100,
-            width: size.width,
-            child: CustomFormField(
-              label: 'Cédula profesional',
-              onChanged: subRegisterCubit.cedula,
-              color: 'blanco',
-              errorMsg: cedula.errorMessage,
-              ) ,
-          )
-          : const SizedBox(),
+        !isDocente 
+          ? const SizedBox()
+          : SizedBox(
+              height: 100,
+              width: size.width,
+              child: CustomFormField(
+                label: 'Cédula profesional',
+                onChanged: (value){
+                  subRegisterCubit.cedula(value);
+                },
+                color: 'blanco',
+                errorMsg: cedula.errorMessage,
+                ) ,
+            ),
       ],
     );
   }
 }
+

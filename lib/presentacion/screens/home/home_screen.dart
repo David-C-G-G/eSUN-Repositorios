@@ -1,4 +1,4 @@
-import 'package:esun/presentacion/widgets.dart';
+import 'package:esun/presentacion/pantallas.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -20,7 +20,7 @@ class HomeScreen extends StatelessWidget {
           SizedBox(
             height: size.height,
             width: size.width,
-            child: const WelcomeScreen()
+            child: const InicioPantalla()
           ),    
 
         ],

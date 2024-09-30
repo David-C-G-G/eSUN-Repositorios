@@ -54,8 +54,10 @@ class CustomFormField extends StatelessWidget {
         focusedBorder: border,
 
         isDense: true,
-        label: label != null ? Text(label!) : null,
+        label: label != null ? Text(label!,) : null,
+        labelStyle: const TextStyle(color: Colors.grey),
         hintText: hint,
+        hintStyle: const TextStyle(color: Colors.grey),
         focusColor: colors.primary,
         prefixIcon: Icon(Icons.account_box_outlined, color: colors.primary,),
         errorText: errorMsg,

@@ -18,8 +18,15 @@ const colorList = <Color>[
 
 ];
 
+const colorBackground = <Color>[
+  Color.fromRGBO(6, 20, 68, 1),
+  Color.fromARGB(255, 22, 113, 170),
+  Color.fromARGB(255, 255, 196, 0)
+];
+
 
 class AppTheme {
+
 
   final bool isDarkmode;
   final int selectedColor;
@@ -35,10 +42,14 @@ class AppTheme {
     useMaterial3: true,
     brightness: isDarkmode ? Brightness.dark : Brightness.light,
     colorSchemeSeed: colorList[ selectedColor ],
-    appBarTheme: const AppBarTheme(
+    appBarTheme: AppBarTheme(
+      backgroundColor: colorBackground[1],
       centerTitle: true
-    )
+    ),
+    scaffoldBackgroundColor: colorBackground[selectedColor],
+    
     
   );
+
 
 }

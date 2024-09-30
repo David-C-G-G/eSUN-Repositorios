@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 
-class CustomButton extends StatelessWidget {
+class CustomButtonImage extends StatelessWidget {
 
-  final String texto;
+  final String name;
   final Function()? onTap;
-  final Function()? onPreset;
 
-  const CustomButton({
-    required this.texto,
+  const CustomButtonImage({
+    required this.name,
     this.onTap,
-    this.onPreset,
     super.key
    });
 
@@ -19,7 +17,7 @@ class CustomButton extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
 
     return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(100),
       child: Material(
         color: colors.primary,
         child: InkWell(
@@ -28,9 +26,10 @@ class CustomButton extends StatelessWidget {
           // highlightColor: Colors.purpleAccent,
           // hoverColor: Colors.amberAccent,
           onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            child: Text(texto, style: const TextStyle(color: Colors.white, fontSize: 20),),
+          child: SizedBox(
+            width: 50,
+            // padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Image.asset(name)
           ),
         ),
       ),
