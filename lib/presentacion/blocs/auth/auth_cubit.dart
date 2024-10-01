@@ -19,10 +19,10 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       final user = await authRepository.login(email, password);
       _setLoggedUser(user);
-    } on WrongCredentials {
-      logout('Credenciales incorrectas');
-    }catch (e){
-      logout('Error no controlado $e');
+    } on CustomError catch (e) {
+      logout(e.message);
+    } catch (e){
+      logout('Error no controlado');
     }
     
   }

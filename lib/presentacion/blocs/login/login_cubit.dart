@@ -15,7 +15,7 @@ class LoginCubit extends Cubit<LoginFormState> {
 
   LoginCubit(this.authcubit) : super(const LoginFormState());
 
-  void onSubmit(){
+  void onSubmit() async {
     
     emit(
       state.copyWith(
@@ -30,9 +30,9 @@ class LoginCubit extends Cubit<LoginFormState> {
       )
     );
 
-    if (state.isValid){
-      authcubit.loginUser(state.email.value, state.password.value);
-    }
+    if ( !state.isValid ) return;
+
+    await  authcubit.loginUser(state.email.value, state.password.value);
   }
 
   void email( String value){

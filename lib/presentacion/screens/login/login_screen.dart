@@ -1,3 +1,4 @@
+import 'package:esun/presentacion/blocs/auth/auth_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -68,13 +69,41 @@ class _LoginUser extends StatelessWidget {
 class _LoginFormField extends StatelessWidget {
   const _LoginFormField();
 
+  // Creación y personalización del snackbar
+  void showSnackbar(BuildContext context, String message){
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message, style: const TextStyle(color: Colors.black),),
+      duration: const Duration(seconds: 3),
+      backgroundColor: Colors.amber,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
 
     final loginCubit = context.watch<LoginCubit>();//mandamos a traer el cubit para adjuntar caracteristicas al formulario
+    final mensajeError = context.watch<AuthCubit>();
 
     final username = loginCubit.state.email;
     final password = loginCubit.state.password;
+
+    bool shouldShowSnackbar = false;
+
+    // if( mensajeError.state.errorMessage.isNotEmpty){
+    //   WidgetsBinding.instance.addPostFrameCallback((_){
+    //     showSnackbar(context, mensajeError.state.errorMessage);
+    //     mensajeError.logout();
+    //   });
+    // }
+    if( mensajeError.state.errorMessage.isNotEmpty && mensajeError.state.authStatus == AuthStatus.notAuthenticated){
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showSnackbar(context, mensajeError.state.errorMessage);
+        shouldShowSnackbar = true;
+        mensajeError.logout();
+      });
+    }
 
     return SingleChildScrollView(
       child: Form(
@@ -85,7 +114,12 @@ class _LoginFormField extends StatelessWidget {
       
             CustomFormField( //formulario de Nombre de usuario
               label: 'email',
-              onChanged: loginCubit.email,
+              onChanged: (value){
+                loginCubit.email(value);
+                if(mensajeError.state.errorMessage.isNotEmpty){
+                  mensajeError.logout();
+                }
+              },
               color: 'blanco',
               errorMsg: username.errorMessage,
                 // username.errorMessage
@@ -97,7 +131,12 @@ class _LoginFormField extends StatelessWidget {
             CustomFormField( //formulario de password
               label: 'password',
               obscureText: true,
-              onChanged: loginCubit.password,
+              onChanged: (value){
+                loginCubit.password(value);
+                if(mensajeError.state.errorMessage.isNotEmpty){
+                  mensajeError.logout();
+                }
+              },
               color: 'blanco',
               errorMsg: password.errorMessage,
             ),
