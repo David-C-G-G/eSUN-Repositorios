@@ -35,6 +35,7 @@ class LoginScreen extends StatelessWidget {
           context.push('/option');
         } else if(state.authStatus == AuthStatus.notAuthenticated && state.errorMessage.isNotEmpty){
           showSnackbar(context, state.errorMessage);
+          context.read<AuthCubit>().logout();
         }
       },
       child: GestureDetector(
@@ -63,19 +64,20 @@ class _LoginUser extends StatelessWidget {
           currentFocus.unfocus();
         }
       },
-      child: Scaffold(
-        backgroundColor: const Color.fromRGBO(6, 20, 68, 1),
+      child: const Scaffold(
+        backgroundColor: Color.fromRGBO(6, 20, 68, 1),
         body: SafeArea(
           child: Padding(
             // padding: EdgeInsets.symmetric(horizontal: 20, vertical: 100),
-            padding: const EdgeInsets.fromLTRB(20, 100, 20, 0),
+            padding: EdgeInsets.fromLTRB(20, 100, 20, 0),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  const LogoWidget(),
-                  _LoginFormField(showSnackbar: showSnackbar),
-                  const SizedBox(
+                  LogoWidget(),
+                  _LoginFormField(),
+                  // _LoginFormField(showSnackbar: showSnackbar),
+                  SizedBox(
                     height: 20,
                   )
                 ],
@@ -90,9 +92,11 @@ class _LoginUser extends StatelessWidget {
 
 class _LoginFormField extends StatelessWidget {
 
-   final Function(BuildContext, String) showSnackbar;
+  //  final Function(BuildContext, String) showSnackbar;
+   
 
-  const _LoginFormField({required this.showSnackbar});
+  // const _LoginFormField({required this.showSnackbar});
+  const _LoginFormField();
 
   @override
   Widget build(BuildContext context) {
@@ -104,16 +108,16 @@ class _LoginFormField extends StatelessWidget {
     final username = loginCubit.state.email;
     final password = loginCubit.state.password;
 
-    bool shouldShowSnackbar = false;
+    
 
-    if (checkMessage.state.errorMessage.isNotEmpty &&
-        checkMessage.state.authStatus == AuthStatus.notAuthenticated) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        showSnackbar(context, checkMessage.state.errorMessage);
-        shouldShowSnackbar = true;
-        checkMessage.logout();
-      });
-    }
+    // if (checkMessage.state.errorMessage.isNotEmpty &&
+    //     checkMessage.state.authStatus == AuthStatus.notAuthenticated) {
+    //   WidgetsBinding.instance.addPostFrameCallback((_) {
+    //     showSnackbar(context, checkMessage.state.errorMessage);
+       
+    //     checkMessage.logout();
+    //   });
+    // }
 
     return SingleChildScrollView(
       child: Form(

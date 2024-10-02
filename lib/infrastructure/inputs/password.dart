@@ -20,7 +20,7 @@ class Password extends FormzInput<String, PasswordError> {
     if( isValid || isPure ) return null;
 
     if( displayError == PasswordError.empty) return 'El campo es requerido';
-    if( displayError == PasswordError.length) return 'Mínimo 8 caracteres';
+    if( displayError == PasswordError.length) return 'Mínimo 6 caracteres';
 
     return null;
   }
@@ -32,7 +32,7 @@ class Password extends FormzInput<String, PasswordError> {
 
 
     if( value.isEmpty || value.trim().isEmpty ) return PasswordError.empty;
-    if( value.length < 8 ) return PasswordError.length;
+    if( value.length < 6 ) return PasswordError.length;
 
 
     return null;
