@@ -3,8 +3,15 @@
 import 'package:esun/presentacion/pantallas.dart';
 import 'package:go_router/go_router.dart';
 
-final appRouter = GoRouter(routes:[
 
+final appRouter = GoRouter(
+  initialLocation: '/',
+  routes:[
+  // Pantalla de verificación de token
+  GoRoute(
+    path: '/splash',
+    builder: (context, state) => const CheckAuthStatusScreen(),
+  ),
   GoRoute(
     name: HomeScreen.name,
     path: '/',
@@ -42,3 +49,9 @@ final appRouter = GoRouter(routes:[
   ),
 
 ]);
+
+
+
+
+
+

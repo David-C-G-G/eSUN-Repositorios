@@ -15,7 +15,7 @@ class LoginCubit extends Cubit<LoginFormState> {
 
   LoginCubit(this.authcubit) : super(const LoginFormState());
 
-  void onSubmit() async {
+  Future<void> onSubmit() async {
     
     emit(
       state.copyWith(
@@ -57,5 +57,11 @@ class LoginCubit extends Cubit<LoginFormState> {
         isValid: Formz.validate([password, state.email])
       )
     );
+  }
+
+  // esta funcion limpia el formulario de mi pantalla
+  @override
+  Future<void> close(){
+    return super.close();
   }
 }

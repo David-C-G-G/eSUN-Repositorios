@@ -12,7 +12,9 @@ class InicioPantalla extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
       body: Center(
         // child: Escudo(),
         child: Container(
@@ -63,6 +65,7 @@ class InicioPantalla extends StatelessWidget {
         ),
   
       ),
+    ),
     );
   }
 }

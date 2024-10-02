@@ -19,8 +19,10 @@ class BlocsProviders extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => RegisterCubit(),),
         BlocProvider(create: (context) => AuthCubit()),
+        BlocProvider(
+          create: (context) => RegisterCubit(BlocProvider.of<AuthCubit>(context)),
+        ),
         BlocProvider(
           create: (context) => LoginCubit(BlocProvider.of<AuthCubit>(context))
         ),

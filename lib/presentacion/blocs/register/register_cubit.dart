@@ -1,5 +1,6 @@
 // import 'dart:convert';
 
+import 'package:esun/presentacion/blocs/auth/auth_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 // import 'package:emailjs/emailjs.dart' as emailjs;
@@ -12,12 +13,12 @@ part 'register_state.dart';
 
 class RegisterCubit extends Cubit<RegisterFormState> {
 
+  final AuthCubit authCubit;
+
+  RegisterCubit(this.authCubit) : super(const RegisterFormState());
 
 
-  RegisterCubit() : super(const RegisterFormState());
-
-
-  void onSubmit(){
+  void onSubmit() async {
 
     emit(
       state.copyWith(
@@ -35,7 +36,9 @@ class RegisterCubit extends Cubit<RegisterFormState> {
         ])
       )
     );
-    // print('Register Cubit Submit: $state');
+    if( !state.isValid) return;
+    await authCubit.registerUser(state.email.value, state.password.value, state.userName.value, state.cedula.value);
+    print('Register Cubit Submit: $state');
   }
 
 

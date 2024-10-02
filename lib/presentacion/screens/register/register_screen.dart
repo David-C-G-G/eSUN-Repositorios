@@ -1,4 +1,5 @@
 import 'package:esun/infrastructure/inputs.dart';
+import 'package:esun/presentacion/blocs/auth/auth_cubit.dart';
 import 'package:esun/presentacion/blocs/blocs.dart';
 import 'package:esun/presentacion/widgets.dart';
 import 'package:flutter/material.dart';
@@ -78,18 +79,40 @@ class _RegisterUser extends StatelessWidget {
 
 class _RegisterFormField extends StatelessWidget {
 
+  const _RegisterFormField();
 
-  
+  // Creación y personalización del snackbar
+  void showSnackbar(BuildContext context, String message){
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message, style: const TextStyle(color: Colors.black),),
+      duration: const Duration(seconds: 3),
+      backgroundColor: Colors.amber,
+      ),
+    );
+  }
 
-  // const _RegisterFormField();
 
   @override
   Widget build(BuildContext context) {
 
     final registerCubit = context.watch<RegisterCubit>();
+    final mesajeErrorRegister = context.watch<AuthCubit>();
+
     final username = registerCubit.state.userName;
     final email    = registerCubit.state.email;
     final password = registerCubit.state.password;
+    final cedula = registerCubit.state.cedula;
+
+    bool shouldShowSnackbar = false;
+
+      if( mesajeErrorRegister.state.errorMessage.isNotEmpty && mesajeErrorRegister.state.authStatus == AuthStatus.notAuthenticated){
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showSnackbar(context, mesajeErrorRegister.state.errorMessage);
+        shouldShowSnackbar = true;
+        mesajeErrorRegister.registrationError();
+      });
+    }
 
     return Form(
       child: Column(
@@ -99,7 +122,12 @@ class _RegisterFormField extends StatelessWidget {
 
           CustomFormField(
             label: 'nombre de usuario',
-            onChanged: registerCubit.userName,
+            onChanged: (value){
+              registerCubit.userName(value);
+              if(mesajeErrorRegister.state.errorMessage.isNotEmpty){
+                mesajeErrorRegister.registrationError();
+              }
+            },
             color: 'blanco',
             errorMsg: username.errorMessage,
           ),
@@ -108,7 +136,12 @@ class _RegisterFormField extends StatelessWidget {
 
           CustomFormField(
             label: 'email ',
-            onChanged: registerCubit.email,
+            onChanged: (value){
+              registerCubit.email(value);
+              if(mesajeErrorRegister.state.errorMessage.isNotEmpty){
+                mesajeErrorRegister.registrationError();
+              }
+            },
             color: 'blanco',
             errorMsg: email.errorMessage,
           ),

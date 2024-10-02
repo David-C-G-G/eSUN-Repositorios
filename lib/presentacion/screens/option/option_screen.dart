@@ -1,5 +1,7 @@
+import 'package:esun/presentacion/blocs/auth/auth_cubit.dart';
 import 'package:esun/presentacion/widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class OptionScreen extends StatelessWidget {
@@ -10,7 +12,6 @@ class OptionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
 
     return  Scaffold(
       appBar: AppBar(
@@ -51,6 +52,9 @@ class _CustomOptions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final cerrarSesion = context.watch<AuthCubit>();
+
     return Column(
         children: [
       
@@ -73,8 +77,9 @@ class _CustomOptions extends StatelessWidget {
           const SizedBox(height: 20,),
 
           CustomButton(
-            texto: 'Regresar',
+            texto: 'Cerrar Sesion',
             onTap: () {
+              cerrarSesion.logout();
               context.pop();
             },
           ),
