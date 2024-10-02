@@ -167,9 +167,11 @@ class _LoginFormField extends StatelessWidget {
                 children: [
                   CustomButton(
                     texto: 'Ingresar',
-                    // onTap: () => context.push('/option')
-                    onTap: () {
-                      loginCubit.onSubmit();
+                    
+                    onTap: loginCubit.state.formStatus == FormStatus.posting
+                    ? null 
+                    : () {
+                      loginCubit.onSubmit();                      
                     },
                   ),
 
