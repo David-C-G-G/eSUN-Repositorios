@@ -17,6 +17,9 @@ class AuthCubit extends Cubit<AuthState> {
   final KeyValueStorageServiceImpl keyvalueStorageService = KeyValueStorageServiceImpl();
 
   Future<void> loginUser( String email, String password ) async {  //! COMPLETO
+
+    // await Future.delayed(const Duration(milliseconds: 1000));
+
     emit(
       state.copyWith(authStatus: AuthStatus.checking,)
     );

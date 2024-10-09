@@ -37,15 +37,24 @@ final appRouter = GoRouter(
   ),
 
   GoRoute(
-    name: DocentesScreen.name,
-    path: '/docentes',
-    builder: (context, state) => const DocentesScreen(),
+    name: SeachRepositoriosScreen.name,
+    path: '/searchRepositorio',
+    builder: (context, state) => const SeachRepositoriosScreen(),
   ),
 
   GoRoute(
-    name: MateriasScreen.name,
-    path: '/materias',
-    builder: (context, state) => const MateriasScreen(),
+    name: CreateRepositoriosScreen.name,
+    path: '/createRepositorio',
+    builder: (context, state) => const CreateRepositoriosScreen(),
+  ),
+
+  GoRoute(
+    name: RepositorioScreen.name,
+    path: '/repositorio/:id',
+    builder: (context, state) {
+      final repositorioId = state.pathParameters['id'] ?? 'no-id';
+      return RepositorioScreen(repositorioId: repositorioId);
+    },
   ),
 
 ]);

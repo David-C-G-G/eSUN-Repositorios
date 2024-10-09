@@ -102,14 +102,14 @@ class _RegisterFormField extends StatelessWidget {
     final username = registerCubit.state.userName;
     final email    = registerCubit.state.email;
     final password = registerCubit.state.password;
-    final cedula = registerCubit.state.cedula;
+    // final cedula = registerCubit.state.cedula;
 
-    bool shouldShowSnackbar = false;
+    // bool shouldShowSnackbar = false;
 
       if( mesajeErrorRegister.state.errorMessage.isNotEmpty && mesajeErrorRegister.state.authStatus == AuthStatus.notAuthenticated){
       WidgetsBinding.instance.addPostFrameCallback((_) {
         showSnackbar(context, mesajeErrorRegister.state.errorMessage);
-        shouldShowSnackbar = true;
+        // shouldShowSnackbar = true;
         mesajeErrorRegister.registrationError();
       });
     }
@@ -169,11 +169,13 @@ class _RegisterFormField extends StatelessWidget {
             children: [
               CustomButton(
                 texto: 'Registrar',
-                onTap: (){
+                onTap: () async {
                   registerCubit.onSubmit();
-                  // print(email.value.toString());
-                  sendMailFromOutlook(email.value.toString());
-                  // registerCubit.sendEmail();
+                  String email = registerCubit.state.email.value;
+                  String username = registerCubit.state.userName.value;
+
+                  EmailSender emailSender = EmailSender();
+                  await emailSender.sendEmail(email, username);
                 },
               ),
 
@@ -193,6 +195,7 @@ class _RegisterFormField extends StatelessWidget {
 }
 
 class _IsDocente extends StatefulWidget {
+
   const _IsDocente();
 
   @override

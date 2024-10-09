@@ -1,30 +1,48 @@
-// import 'package:flutter/material.dart';
-// import 'package:esun/infrastructure/inputs.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:mailer/mailer.dart';
-import 'package:mailer/smtp_server.dart';
+
+// import 'package:flutter_dotenv/flutter_dotenv.dart';
+// import 'package:mailer/mailer.dart';
+// import 'package:mailer/smtp_server.dart';
+import 'package:resend/resend.dart';
 
 
+class EmailSender {
+  
+  Future<void> sendEmail(String destino, String nombre) async {
+    Resend(apiKey: "re_RHZGLmgx_J4zzKtct7zu84TCiqFgc2H6u");
 
-final smtpServer = hotmail(dotenv.env["OUTLOOK_EMAIL"]!, dotenv.env["OUTLOOK_PASSWORD"]!);
-
-  sendMailFromOutlook( String email) async {
-    final message = Message()
-    ..from = Address(dotenv.env["OUTLOOK_EMAIL"]!)
-    ..recipients.add(email)
-    // ..ccRecipients.addAll(['destCc1@example.com', 'destCc2@example.com'])
-    // ..bccRecipients.add(Address('bccAddress@example.com'))
-    ..subject = 'Test de email desde eSUN'
-    ..text = 'This is the plain text.\nThis is line 2 of the text part.'
-    ..html = "<h1>Bienvenido(a) a eSUN</h1>\n<p>Registrado(a) correctamente</p>";
-
-  try {
-    final sendReport = await send(message, smtpServer);
-    print('Message sent: ' + sendReport.toString());
-  } on MailerException catch (e) {
-    print('Message not sent: $e');
-    for (var p in e.problems) {
-      print('Problem: ${p.code}: ${p.msg}');
+    try {
+      final resend = Resend.instance;
+      resend.sendEmail(
+      from: 'davcogut@gmail.com', 
+      to: [destino] , 
+      subject: 'Prueba de envio de correo',
+      text: 'si recibiste esto es por que funciona'
+      );
+    } catch (e) {
+      print('email no enviado $e');
     }
+    
+    // String username = dotenv.env['OUTLOOK_EMAIL'] ?? '';
+    // String password = dotenv.env['OUTLOOK_PASSWORD'] ?? '';
+
+    // final smtpServer = SmtpServer('smtp-mail.outlook.com',
+    //   username: username,
+    //   password: password,
+    //   port: 587,
+    //   ignoreBadCertificate: true,
+    //   ssl: false
+    // );
+    // final message = Message()
+    //   ..from = Address(username, 'eSUN')
+    //   ..recipients.add(destino)
+    //   ..subject = 'Bienvenido(a) a eSUN'
+    //   ..text = "$nombre, te damos la bienvenida a esta herramienta de aprendizaje, deseando que sea de utilidad durante tu estancia en la FCC";
+
+    // try {
+    //   final  sendEmail = await send(message, smtpServer);
+    //   print('Correo enviado: ${sendEmail.toString()}');   
+    // } catch (e) {
+    //   print('Error al enviar el correo: $e');
+    // }
   }
 }

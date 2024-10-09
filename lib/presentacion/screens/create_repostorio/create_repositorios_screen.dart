@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class MateriasScreen extends StatelessWidget {
+class CreateRepositoriosScreen extends StatelessWidget {
 
-  static const String name = 'MariaScreen';
+  static const String name = 'CreateRepositoriosScreen';
 
-  const MateriasScreen({super.key});
+  const CreateRepositoriosScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

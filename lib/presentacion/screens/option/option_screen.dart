@@ -15,7 +15,7 @@ class OptionScreen extends StatelessWidget {
 
     return  Scaffold(
       appBar: AppBar(
-        title: const Text('Busqueda de repositorios', style: TextStyle(color: Colors.white, ),),
+        title: const Text('Opciones', style: TextStyle(color: Colors.white, ),),
 
       ),    
       body: SingleChildScrollView(
@@ -31,12 +31,8 @@ class OptionScreen extends StatelessWidget {
                   width: 150,
                   child: Image.asset('assets/escudo.png'),
                 ),
-        
-              const SizedBox(height: 30,),
-          
-              const Text('¿Deseas buscar por?', style: TextStyle(color: Colors.white, fontSize: 25 ),),
-        
-              const SizedBox(height: 30,),
+                
+              const SizedBox(height: 40,),
         
               const _CustomOptions(),
             ],
@@ -59,22 +55,23 @@ class _CustomOptions extends StatelessWidget {
         children: [
       
           CustomButton(
-            texto: 'Docentes',
+            texto: 'Buscar Repositorio',
             onTap: (){
-              context.push('/docentes');
+              context.push('/searchRepositorio');
             },
           ),
       
-          const SizedBox(height: 20,),
+          const SizedBox(height: 40,),
       
           CustomButton(
-            texto: 'Materia',
+            texto: 'Crear Repositorio',
             onTap: () {
-              context.push('/materias');
+              context.push('/createRepositorio');
             },
           ),
           
-          const SizedBox(height: 20,),
+          const SizedBox(height: 40,),
+          // const Spacer(flex: 1,), // ! no poner spacer
 
           CustomButton(
             texto: 'Cerrar Sesion',
