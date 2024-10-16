@@ -5,6 +5,7 @@ const colorList = <Color>[
   
 
   Colors.blue,
+  Colors.white,
   Colors.amber,
   Colors.cyan,
   Colors.deepOrange,
@@ -34,7 +35,7 @@ class AppTheme {
 
   AppTheme({
     this.isDarkmode = false,
-    this.selectedColor = 0
+    this.selectedColor = 1
   }): assert (selectedColor >= 0, 'El color debe ser mayor a 0 ',),
       assert (selectedColor < colorList.length, 'El color debe ser menor a ${colorList.length - 1} ',);
 

@@ -91,11 +91,6 @@ class _LoginUser extends StatelessWidget {
 }
 
 class _LoginFormField extends StatelessWidget {
-
-  //  final Function(BuildContext, String) showSnackbar;
-   
-
-  // const _LoginFormField({required this.showSnackbar});
   const _LoginFormField();
 
   @override
@@ -107,17 +102,6 @@ class _LoginFormField extends StatelessWidget {
 
     final username = loginCubit.state.email;
     final password = loginCubit.state.password;
-
-    
-
-    // if (checkMessage.state.errorMessage.isNotEmpty &&
-    //     checkMessage.state.authStatus == AuthStatus.notAuthenticated) {
-    //   WidgetsBinding.instance.addPostFrameCallback((_) {
-    //     showSnackbar(context, checkMessage.state.errorMessage);
-       
-    //     checkMessage.logout();
-    //   });
-    // }
 
     return SingleChildScrollView(
       child: Form(

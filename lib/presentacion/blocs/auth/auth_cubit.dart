@@ -44,8 +44,13 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       final user = await authRepository.register(email, password, fullNamed, cedula);
       _setRegisteredUser(user);
+      emit(state.copyWith(authStatus: AuthStatus.registered));
     }on CustomError catch (e) {
-      registrationError(e.message);
+      if(e.message.contains('Key (email)=($email) already exists.')){
+        registrationError('El correo ya está registrado.');
+      }else{
+        registrationError(e.message);
+      }
     } catch (e) {
       registrationError('Error no controlado');
     }

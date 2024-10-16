@@ -5,12 +5,12 @@ import 'package:equatable/equatable.dart';
 
 part 'repositorio_repository_state.dart';
 
-class RepositoriosRepositoryCubit extends Cubit<RepositorioRepositoryState> {
+class RepositoriosRepositoryCubit extends Cubit<RepositoriosRepositoryState> {
 
   RepositoriosRepositoryImpl? repositoriosRepository;
 
   RepositoriosRepositoryCubit
-  (AuthCubit authCubit) : super(const RepositorioRepositoryState()){
+  (AuthCubit authCubit) : super(const RepositoriosRepositoryState()){
     authCubit.stream.listen((authState) {
       final accessToken = authState.user?.token ?? '';
       repositoriosRepository = RepositoriosRepositoryImpl(RepositoriosDatasourceImpl(accessToken: accessToken));
