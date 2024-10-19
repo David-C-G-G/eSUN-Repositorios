@@ -57,7 +57,7 @@ class AuthDatasourceImpl extends AuthDatasource {
       
     } on DioException catch (e) {
       if( e.response?.statusCode == 401 ) {
-          throw CustomError(e.response?.data['message'] ?? 'Credenciales no válidas' );
+          throw CustomError(e.response?.data['message'] ?? 'Credenciales incorrectas' );
         }
       if( e.type == DioExceptionType.connectionTimeout ) throw CustomError('Revisar conexión a internet');
       throw Exception();

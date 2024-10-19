@@ -1,10 +1,10 @@
-part of 'repositorios_repository_cubit.dart';
+// part of 'repositorios_repository_cubit.dart';
 
-class RepositoriosRepositoryState extends Equatable {
+// class RepositoriosRepositoryState extends Equatable {
 
   
-  const RepositoriosRepositoryState();
+//   const RepositoriosRepositoryState();
 
-  @override
-  List<Object> get props => [];
-}
+//   @override
+//   List<Object> get props => [];
+// }

@@ -2,7 +2,6 @@
 
 
 import 'package:esun/domain/domain.dart';
-
 import '../infraestructure.dart';
 
 class AuthRepositoryImpl extends AuthRepository{

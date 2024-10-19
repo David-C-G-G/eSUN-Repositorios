@@ -13,16 +13,10 @@ class RepositorioScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // obtenemos el RepositoriosRepositoryCubit para pasar al RepositorioCubit
-    final repositoriosRepositoryCubit =
-        context.read<RepositoriosRepositoryCubit>();
+    // final repositoriosRepositoryCubit =
+    //     context.read<RepositoriosRepositoryCubit>();
 
-    return BlocProvider(
-      create: (context) => RepositorioCubit(
-        repositoriosRepository:
-            repositoriosRepositoryCubit.repositoriosRepository!,
-        repositorioId: repositorioId,
-      )..loadRepositorio(),
-      child: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: const Text('Editar Repositorio'),
           actions: [
@@ -49,8 +43,7 @@ class RepositorioScreen extends StatelessWidget {
           onPressed: () {},
           child: const Icon(Icons.save_as_outlined),
         ),
-      ),
-    );
+      );
   }
 }
 

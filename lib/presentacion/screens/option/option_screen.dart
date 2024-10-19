@@ -1,7 +1,9 @@
-import 'package:esun/presentacion/blocs/auth/auth_cubit.dart';
+// import 'package:esun/presentacion/blocs/auth/auth_cubit.dart';
+import 'package:esun/presentacion/providers/auth_provider.dart';
 import 'package:esun/presentacion/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class OptionScreen extends StatelessWidget {
@@ -43,13 +45,11 @@ class OptionScreen extends StatelessWidget {
   }
 }
 
-class _CustomOptions extends StatelessWidget {
+class _CustomOptions extends ConsumerWidget {
   const _CustomOptions();
 
   @override
-  Widget build(BuildContext context) {
-
-    final cerrarSesion = context.watch<AuthCubit>();
+  Widget build(BuildContext context, WidgetRef ref) {
 
     return Column(
         children: [
@@ -76,8 +76,9 @@ class _CustomOptions extends StatelessWidget {
           CustomButton(
             texto: 'Cerrar Sesion',
             onTap: () {
-              cerrarSesion.logout();
-              context.pop();
+              // cerrarSesion.logout();
+              ref.read(authProvider.notifier).logout();
+              // context.pop();
             },
           ),
           

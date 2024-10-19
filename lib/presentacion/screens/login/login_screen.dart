@@ -1,10 +1,9 @@
-import 'package:esun/presentacion/blocs/auth/auth_cubit.dart';
+import 'package:esun/presentacion/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-// import 'package:esun/presentacion/blocs/blocs.dart';
-import 'package:esun/presentacion/blocs/login/login_cubit.dart';
+import 'package:esun/presentacion/providers/providers.dart';
 import 'package:esun/presentacion/widgets.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -12,47 +11,17 @@ class LoginScreen extends StatelessWidget {
 
   const LoginScreen({super.key});
 
-  // Creación y personalización del snackbar
-  void showSnackbar(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          message,
-          style: const TextStyle(color: Colors.black),
-        ),
-        duration: const Duration(seconds: 3),
-        backgroundColor: Colors.amber,
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCubit, AuthState>(
-      listener: (context, state) {
-        if(state.authStatus == AuthStatus.authenticated){
-          context.push('/option');
-        } else if(state.authStatus == AuthStatus.notAuthenticated && state.errorMessage.isNotEmpty){
-          showSnackbar(context, state.errorMessage);
-          context.read<AuthCubit>().logout();
-        }
-      },
-      child: GestureDetector(
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: _LoginUser(showSnackbar: showSnackbar,),
-      ),
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: _LoginUser(),
     );
   }
 }
 //------------
 
 class _LoginUser extends StatelessWidget {
-
-  final Function(BuildContext, String) showSnackbar;
-
-  const _LoginUser({required this.showSnackbar});
-
   @override
   Widget build(BuildContext context) {
     FocusScopeNode currentFocus = FocusScope.of(
@@ -64,21 +33,31 @@ class _LoginUser extends StatelessWidget {
           currentFocus.unfocus();
         }
       },
-      child: const Scaffold(
-        backgroundColor: Color.fromRGBO(6, 20, 68, 1),
+      child: Scaffold(
+        backgroundColor: const Color.fromRGBO(6, 20, 68, 1),
         body: SafeArea(
           child: Padding(
-            // padding: EdgeInsets.symmetric(horizontal: 20, vertical: 100),
-            padding: EdgeInsets.fromLTRB(20, 100, 20, 0),
+            padding: const EdgeInsets.fromLTRB(20, 100, 20, 0),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  LogoWidget(),
-                  _LoginFormField(),
-                  // _LoginFormField(showSnackbar: showSnackbar),
-                  SizedBox(
+                  const LogoWidget(),
+                  const _LoginFormField(),
+                  const SizedBox(
                     height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        '¿No tienes cuenta?',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      TextButton(
+                          onPressed: () => context.push('/register'),
+                          child: const Text('Crea una aquí'))
+                    ],
                   )
                 ],
               ),
@@ -90,18 +69,30 @@ class _LoginUser extends StatelessWidget {
   }
 }
 
-class _LoginFormField extends StatelessWidget {
+class _LoginFormField extends ConsumerWidget {
   const _LoginFormField();
 
+  void showSnackbar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final loginForm = ref.watch(loginFormProvider);
 
-    final loginCubit = context.watch<LoginCubit>(); //mandamos a traer el cubit para adjuntar caracteristicas al formulario
-
-    final checkMessage = context.watch<AuthCubit>();
-
-    final username = loginCubit.state.email;
-    final password = loginCubit.state.password;
+    ref.listen(authProvider, (previous, next) {
+      if (next.errorMessage.isNotEmpty && next.authStatus != AuthStatus.authenticated) {
+        showSnackbar(context, next.errorMessage);
+      } else if (next.authStatus == AuthStatus.authenticated) {
+        showSnackbar(context, 'Inicio de sesión correcto');
+      }
+      // if (next.errorMessage.isEmpty) {
+      //   showSnackbar(context, 'Inicio exitoso');
+      // }
+      // showSnackbar(context, next.errorMessage);
+    });
 
     return SingleChildScrollView(
       child: Form(
@@ -111,34 +102,25 @@ class _LoginFormField extends StatelessWidget {
               height: 20,
             ),
             CustomFormField(
-              //formulario de Nombre de usuario
               label: 'email',
-              onChanged: (value) {
-                loginCubit.email(value);
-                if (checkMessage.state.errorMessage.isNotEmpty) {
-                  checkMessage.logout();
-                }
-              },
-              color: 'blanco',
-              errorMsg: username.errorMessage,
-              // username.errorMessage
-              // : null,
+              hint: 'email',
+              onChanged: ref.read(loginFormProvider.notifier).onEmailChange,
+              errorMsg:
+                  loginForm.isFormPosted ? loginForm.email.errorMessage : null,
+              prefixIcon: const Icon(Icons.account_circle_outlined),
             ),
             const SizedBox(
               height: 20,
             ),
             CustomFormField(
-              //formulario de password
               label: 'password',
+              hint: 'password',
               obscureText: true,
-              onChanged: (value) {
-                loginCubit.password(value);
-                if (checkMessage.state.errorMessage.isNotEmpty) {
-                  checkMessage.logout();
-                }
-              },
-              color: 'blanco',
-              errorMsg: password.errorMessage,
+              onChanged: ref.read(loginFormProvider.notifier).onPasswordChange,
+              errorMsg: loginForm.isFormPosted
+                  ? loginForm.password.errorMessage
+                  : null,
+              prefixIcon: const Icon(Icons.password_outlined),
             ),
             const SizedBox(
               height: 40,
@@ -149,24 +131,18 @@ class _LoginFormField extends StatelessWidget {
                 //renglon en donde metemos 2 botones
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  CustomButton(
-                    texto: 'Ingresar',
-                    
-                    onTap: loginCubit.state.formStatus == FormStatus.posting
-                    ? null 
-                    : () {
-                      loginCubit.onSubmit();                      
-                    },
-                  ),
-
-                  // const Spacer(),
-
-                  CustomButton(
-                    texto: 'Regresar',
-                    onTap: () {
-                      context.pop();
-                    },
-                  ),
+                  loginForm.isPosting 
+                  ? const CircularProgressIndicator()
+                  : CustomButton(
+                      texto: 'Ingresar',
+                      onTap: loginForm.isPosting 
+                        ? null
+                        :  ref.read(loginFormProvider.notifier).onFormSubmit,
+                    ),
+                  // CustomButton(
+                  //   texto: 'Regresar',
+                  //   onTap: () {},
+                  // ),
                 ],
               ),
             ),

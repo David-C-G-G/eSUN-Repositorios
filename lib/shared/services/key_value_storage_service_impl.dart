@@ -1,7 +1,7 @@
 
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:esun/shared/services/key_value_storage_service.dart';
+import 'key_value_storage_service.dart';
 
 class KeyValueStorageServiceImpl extends KeyValueStorageService{
 

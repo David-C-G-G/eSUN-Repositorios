@@ -1,9 +1,5 @@
-import 'package:esun/presentacion/blocs/blocs.dart';
-import 'package:esun/presentacion/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:go_router/go_router.dart';
+// import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 
 class SeachRepositoriosScreen extends StatelessWidget {
@@ -47,7 +43,7 @@ class _RepositoriosListState extends State<_RepositoriosList> {
     _scrollController = ScrollController();
     _scrollController.addListener((){
       if(_scrollController.position.pixels >= _scrollController.position.maxScrollExtent){
-        context.read<RepositoriosDataCubit>().loadNextPage();
+        // context.read<RepositoriosDataCubit>().loadNextPage();
       }
     });
   }
@@ -62,48 +58,23 @@ class _RepositoriosListState extends State<_RepositoriosList> {
   Widget build(BuildContext context) {
 
 
-    return BlocBuilder<RepositoriosDataCubit, RepositoriosDataState>(
-      builder: (context, state){
-        if(state.isLoading && state.repositorios.isEmpty){
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
+    return const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          child: Center()
+          // MasonryGridView.count(
+          //   controller: _scrollController,
+          //   physics: const BouncingScrollPhysics(),
+          //   crossAxisCount: 2, 
+          //   mainAxisSpacing: 20,
+          //   crossAxisSpacing: 35,
+          //   itemBuilder: (context, index) {
 
-        if (state.isLastPage && state.repositorios.isEmpty){
-          return const Center(
-            child: Text('No hay mas repositorios'),
-          );
-        }
-
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: MasonryGridView.count(
-            controller: _scrollController,
-            physics: const BouncingScrollPhysics(),
-            crossAxisCount: 2, 
-            mainAxisSpacing: 20,
-            crossAxisSpacing: 35,
-            itemCount: state.repositorios.length + (state.isLoading ? 1 : 0),
-            itemBuilder: (context, index) {
-
-              if(index == state.repositorios.length){
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-
-              final repositorio = state.repositorios[index];
-              return GestureDetector(
-                onTap: () => context.push('/repositorio/${repositorio.id}'),
-                child: RepositorioCard(repositorio: repositorio)
-              );
-            },
-          ),
+              
+          //     return GestureDetector(
+          //     );
+          //   },
+          // ),
         );
-
-      }
-    );
     
   }
 
