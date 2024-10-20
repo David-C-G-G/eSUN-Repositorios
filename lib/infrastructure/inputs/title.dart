@@ -12,7 +12,7 @@ class Title extends FormzInput<String, TitleError> {
 
 
   // Llama a super.dirty para representar un modificador de tipo form input (sucio)
-  const Title.dirty( String value ) : super.dirty(value);
+  const Title.dirty({String value = '' }) : super.dirty(value);
 
   // Este método fue creado para ser llamado directamente desde donde se usará por ejemplo: email.errorMessage
   String? get errorMessage{

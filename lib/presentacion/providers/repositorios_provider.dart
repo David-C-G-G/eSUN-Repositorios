@@ -23,6 +23,29 @@ class RepositoriosNotifier extends StateNotifier<RepositoriosState> {
     loadNextPage();
   }
 
+  Future<bool> createOrUpdateRepositorio( Map<String,dynamic> repositorioLike ) async {
+
+    try {
+      final repositorio = await repositoriosRepository.createUpdateRepositorio(repositorioLike);
+      final isRepositorioInList = state.repositorios.any((elemento) => elemento.id == repositorio.id);
+      if(!isRepositorioInList){
+        state = state.copyWith(
+          repositorios: [...state.repositorios, repositorio],
+        );
+        return true;
+      }
+
+      state = state.copyWith(
+        repositorios: state.repositorios.map(
+          (elemento) => (elemento.id == repositorio.id) ? repositorio : elemento,
+        ).toList()
+      );
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future loadNextPage() async {
 
     if( state.isLoading || state.isLastPage ) return;

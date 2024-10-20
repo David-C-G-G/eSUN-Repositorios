@@ -12,7 +12,7 @@ class Materia extends FormzInput<String, MateriaError> {
 
 
   // Llama a super.dirty para representar un modificador de tipo form input (sucio)
-  const Materia.dirty(String value) : super.dirty(value);
+  const Materia.dirty({String value = ''}) : super.dirty(value);
 
   // Este método fue creado para ser llamado directamente desde donde se usará por ejemplo: email.errorMessage
   String? get errorMessage{
