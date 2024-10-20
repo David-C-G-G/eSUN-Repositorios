@@ -1,0 +1,3 @@
+
+
+class RepositorioNotFound implements Exception {}

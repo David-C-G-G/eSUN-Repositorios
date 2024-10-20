@@ -15,7 +15,7 @@ class RepositorioMapper {
     seccion: int.parse(json['seccion'].toString()),
     anotacion: json['anotacion'],
     comentario: json['comentario'],
-    cu: json['cu'],
+    // cu: json['cu'],
     tt: json['tt'],
     archivoComprimido: List<String>.from(
       json['archivoComprimido'].map( 

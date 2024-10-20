@@ -11,7 +11,7 @@ class User extends Equatable {
   final String? cedula;
   final String token;
 
-  User({
+  const User({
     required this.id, 
     required this.email, 
     required this.fullName, 

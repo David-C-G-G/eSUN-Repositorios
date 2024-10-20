@@ -2,7 +2,6 @@
 
 
 import 'package:esun/domain/domain.dart';
-
 import '../infraestructure.dart';
 
 class AuthRepositoryImpl extends AuthRepository{
@@ -27,5 +26,6 @@ class AuthRepositoryImpl extends AuthRepository{
   Future<User> register(String email, String password, String fullNamed, String? cedula) {
     return dataSource.register(email, password, fullNamed, cedula);
   }
+  
   
 }

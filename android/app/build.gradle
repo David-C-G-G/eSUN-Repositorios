@@ -1,3 +1,4 @@
+//ESTE ARCHIVO FUE MODIFICADO EL 19 OCTUBRE 2024 DESPUES DE HACER EL COMMIT EN GIT DE "PANTALLA REPOSITORIO"
 plugins {
     id "com.android.application"
     id "kotlin-android"
@@ -25,7 +26,8 @@ if (flutterVersionName == null) {
 
 android {
     namespace = "com.leadingsoftware.esun"
-    compileSdk = flutter.compileSdkVersion
+    // compileSdk = flutter.compileSdkVersion
+    compileSdk = 34 // se modificó esta linea. la anterior está arriba comentada
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -36,10 +38,12 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.leadingsoftware.esun"
+        minSdkVersion = 21 // se modifico esta linea. la linea anterior está abajo comentada
+        targetSdkVersion = 34 // se modifico esta linea. la linea anterior está abajo comentada
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
+        // minSdk = flutter.minSdkVersion // se quita por duplicidad arriba
+        // targetSdk = flutter.targetSdkVersion // se quita por duplicidad arriba
         versionCode = flutterVersionCode.toInteger()
         versionName = flutterVersionName
     }

@@ -1,7 +1,7 @@
-import 'package:esun/presentacion/blocs/blocs.dart';
+import 'package:esun/presentacion/providers/providers.dart';
 import 'package:esun/presentacion/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
 
@@ -30,79 +30,55 @@ class SeachRepositoriosScreen extends StatelessWidget {
   }
 }
 
-class _RepositoriosList extends StatefulWidget {
+class _RepositoriosList extends ConsumerStatefulWidget {
   const _RepositoriosList();
 
   @override
   _RepositoriosListState createState() => _RepositoriosListState();
 }
 
-class _RepositoriosListState extends State<_RepositoriosList> {
+class _RepositoriosListState extends ConsumerState{
 
-  late final ScrollController _scrollController;
+  final ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
-    _scrollController.addListener((){
-      if(_scrollController.position.pixels >= _scrollController.position.maxScrollExtent){
-        context.read<RepositoriosDataCubit>().loadNextPage();
+    scrollController.addListener((){
+      if((scrollController.position.pixels + 400) >= scrollController.position.maxScrollExtent){
+        ref.read(repositoriosProvider.notifier).loadNextPage();
       }
     });
+    // if()
   }
 
   @override
   void dispose() {
-    _scrollController.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
 
-
-    return BlocBuilder<RepositoriosDataCubit, RepositoriosDataState>(
-      builder: (context, state){
-        if(state.isLoading && state.repositorios.isEmpty){
-          return const Center(
-            child: CircularProgressIndicator(),
+    final repositoriosState = ref.watch(repositoriosProvider);
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: MasonryGridView.count(
+        controller: scrollController,
+        physics: const BouncingScrollPhysics(),
+        crossAxisCount: 2, 
+        mainAxisSpacing: 20,
+        crossAxisSpacing: 35,
+        itemCount: repositoriosState.repositorios.length,
+        itemBuilder: (context, index) {
+          final repositorio = repositoriosState.repositorios[index];
+          return GestureDetector(
+            onTap: () => context.push('/repositorio/${ repositorio.id }'),
+            child: RepositorioCard(repositorio: repositorio)
           );
-        }
-
-        if (state.isLastPage && state.repositorios.isEmpty){
-          return const Center(
-            child: Text('No hay mas repositorios'),
-          );
-        }
-
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: MasonryGridView.count(
-            controller: _scrollController,
-            physics: const BouncingScrollPhysics(),
-            crossAxisCount: 2, 
-            mainAxisSpacing: 20,
-            crossAxisSpacing: 35,
-            itemCount: state.repositorios.length + (state.isLoading ? 1 : 0),
-            itemBuilder: (context, index) {
-
-              if(index == state.repositorios.length){
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-
-              final repositorio = state.repositorios[index];
-              return GestureDetector(
-                onTap: () => context.push('/repositorio/${repositorio.id}'),
-                child: RepositorioCard(repositorio: repositorio)
-              );
-            },
-          ),
-        );
-
-      }
+        },
+      ),
     );
     
   }

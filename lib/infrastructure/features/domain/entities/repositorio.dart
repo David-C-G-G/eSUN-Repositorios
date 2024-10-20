@@ -10,7 +10,7 @@ class Repositorio {
   int seccion;
   String? anotacion;
   String? comentario;
-  String cu;
+  // String cu;
   String tt;
   List<String> archivoComprimido;
   User? user;
@@ -23,7 +23,7 @@ class Repositorio {
     required this.seccion,
     required this.anotacion,
     required this.comentario,
-    required this.cu,
+    // required this.cu,
     required this.tt,
     required this.archivoComprimido,
     required this.user,
