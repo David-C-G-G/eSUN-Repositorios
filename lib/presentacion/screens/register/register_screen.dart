@@ -1,6 +1,4 @@
-// import 'package:esun/infrastructure/inputs.dart';
-import 'package:esun/presentacion/providers/auth_provider.dart';
-import 'package:esun/presentacion/providers/register_form_provider.dart';
+import 'package:esun/presentacion/providers/providers.dart';
 import 'package:esun/presentacion/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -62,8 +60,14 @@ class _RegisterUser extends StatelessWidget {
   }
 }
 
-class _RegisterFormField extends ConsumerWidget {
+class _RegisterFormField extends ConsumerStatefulWidget {
   const _RegisterFormField();
+
+  @override
+ ConsumerState<_RegisterFormField> createState() => _RegisterFormFieldState();
+}
+
+class _RegisterFormFieldState extends ConsumerState<_RegisterFormField> {
 
   void showSnackbar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -72,7 +76,7 @@ class _RegisterFormField extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
 
     final registerForm = ref.watch(registerFormProvider);
 
@@ -138,10 +142,11 @@ class _RegisterFormField extends ConsumerWidget {
                   onTap: registerForm.isPosting
                     ? null
                     : () async {
+                      
                         final result = await ref.read(registerFormProvider.notifier).onFormSubmit();
                         print(result);
 
-                        if(result){
+                        if(mounted && result){
                           context.go('/login');
                         }else{
                           return null;

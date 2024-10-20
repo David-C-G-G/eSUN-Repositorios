@@ -1,44 +1,32 @@
-import 'package:esun/infrastructure/features/domain/domain.dart';
-import 'package:esun/presentacion/blocs/blocs.dart';
-import 'package:esun/presentacion/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RepositorioScreen extends StatelessWidget {
+import 'package:esun/infrastructure/features/domain/domain.dart';
+import 'package:esun/presentacion/providers/providers.dart';
+import 'package:esun/presentacion/widgets.dart';
+
+class RepositorioScreen extends ConsumerWidget {
   static const String name = 'RepositorioScreen';
   final String repositorioId;
-
-  const RepositorioScreen({required this.repositorioId, super.key});
+  const RepositorioScreen({super.key, required this.repositorioId});
 
   @override
-  Widget build(BuildContext context) {
-    // obtenemos el RepositoriosRepositoryCubit para pasar al RepositorioCubit
-    // final repositoriosRepositoryCubit =
-    //     context.read<RepositoriosRepositoryCubit>();
+  Widget build(BuildContext context, WidgetRef ref) {
+
+    final repositorioState = ref.watch( repositorioProvider(repositorioId));
 
     return Scaffold(
         appBar: AppBar(
           title: const Text('Editar Repositorio'),
           actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.file_upload))
+            IconButton(
+              onPressed: () {}, 
+              icon: const Icon(Icons.file_upload))
           ],
         ),
-        // body: const RepositorioScreenBody(),
-        body: BlocBuilder<RepositorioCubit, RepositorioState>(
-          builder: (context, state) {
-            if (state.isLoading) {
-              return const FullScreenLoader();
-            }
-
-            if (state.repositorio == null) {
-              return const Center(
-                child: Text('Cargando'),
-              );
-            }
-
-            return _RepositorioView(repositorio: state.repositorio!);
-          },
-        ),
+        body: repositorioState.isLoading
+          ? const FullScreenLoader()
+          : _RepositorioView(repositorio: repositorioState.repositorio!),
         floatingActionButton: FloatingActionButton(
           onPressed: () {},
           child: const Icon(Icons.save_as_outlined),
@@ -47,50 +35,25 @@ class RepositorioScreen extends StatelessWidget {
   }
 }
 
+
 class _RepositorioView extends StatelessWidget {
   final Repositorio repositorio;
-
   const _RepositorioView({required this.repositorio});
 
   @override
   Widget build(BuildContext context) {
-
-    // final repositorioForm = context.read<RepositorioFormCubit>();
-
-    return ListView(
-      children: [
-        SizedBox(
-          height: 250,
-          width: 600,
-          child: _ArchivoGallery(archivos: repositorio.archivoComprimido),
-        ),
-        const SizedBox(height: 10),
-        Center(
-            child: Text(repositorio.title,
-                style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white))),
-        const SizedBox(height: 10),
-        _ProductInformation(repositorio: repositorio),
-        const SizedBox(height: 20),
-      ],
-    );
-  }
-}
-
-class _ProductInformation extends StatelessWidget {
-  final Repositorio repositorio;
-  const _ProductInformation({required this.repositorio});
-
-  @override
-  Widget build(BuildContext context) {
-    // final textStyles = Theme.of(context).textTheme;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: ListView(
+        children: [
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(
+                height: 250,
+                width: 600,
+                child: _ArchivoGallery(archivos: repositorio.archivoComprimido),
+              ),
               const Text(
                 'Datos Repositorio',
                 style: TextStyle(
@@ -123,7 +86,7 @@ class _ProductInformation extends StatelessWidget {
               ),
               // const SizedBox(height: 15),
               CustomRepositorioField(
-                label: 'Anotacion:',
+                label: 'Tecnologías:',
                 initialValue:
                     repositorio.anotacion ?? 'agrega una nota importante',
               ),
@@ -144,6 +107,8 @@ class _ProductInformation extends StatelessWidget {
               ),
               const SizedBox(height: 100),
             ],
+      )
+        ],
       )
     );
   }

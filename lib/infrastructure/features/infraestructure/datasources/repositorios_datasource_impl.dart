@@ -66,8 +66,7 @@ class RepositoriosDatasourceImpl extends RepositoriosDatasource{
     } on DioException catch (e){
       if(e.response!.statusCode == 404 ) throw RepositorioNotFound();
       throw Exception();
-    }
-    catch (e) {
+    } catch (e) {
       throw Exception(e);
     }
   }

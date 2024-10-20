@@ -59,8 +59,9 @@ final goRouterProvider = Provider((ref) {
         name: RepositorioScreen.name,
         path: '/repositorio/:id',
         builder: (context, state) {
-          final repositorioId = state.pathParameters['id'] ?? 'no-id';
-          return RepositorioScreen(repositorioId: repositorioId);
+          return RepositorioScreen(
+            repositorioId: state.pathParameters['id'] ?? 'no-id',
+          );
         },
       ),
     ],
