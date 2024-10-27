@@ -49,7 +49,7 @@ class RepositorioFormNotifier extends StateNotifier<RepositorioFormState> {
     if(onSubmitCallback == null) return false;
 
     final repositorioLike = {
-      'id': state.id,
+      'id': (state.id == 'new') ? null : state.id,
       'title': state.title.value,
       'docente': state.docente.value,
       'materia': state.materia.value,

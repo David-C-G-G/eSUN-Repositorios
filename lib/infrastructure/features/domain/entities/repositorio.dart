@@ -26,7 +26,7 @@ class Repositorio {
     // required this.cu,
     required this.tt,
     required this.archivoComprimido,
-    required this.user,
+    this.user,
   });
 
 }
