@@ -57,7 +57,7 @@ class RepositorioFormNotifier extends StateNotifier<RepositorioFormState> {
       'anotacion': state.anotacion,
       'comentario': state.comentario,
       'archivoComprimido': state.archivoComprimido.map(
-        (archivo) => archivo.replaceAll('${ Environment.apiUrl}/files/repositorio', '')
+        (image) => image.replaceAll('${ Environment.apiUrl }/files/repositorio', '')
       ).toList(),
       'tt': state.tt.value
     };
@@ -78,6 +78,13 @@ class RepositorioFormNotifier extends StateNotifier<RepositorioFormState> {
         Materia.dirty(value: state.materia.value),
         TipoTrabajo.dirty(value: state.tt.value),
       ])
+    );
+  }
+
+  // archivo Creado para imagenes
+  void updateProduct(String path){
+    state = state.copyWith(
+      archivoComprimido: [path, ...state.archivoComprimido]
     );
   }
 

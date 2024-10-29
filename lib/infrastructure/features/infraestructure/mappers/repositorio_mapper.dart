@@ -1,6 +1,7 @@
 
 
 // import 'package:esun/config/config.dart';
+import 'package:esun/config/config.dart';
 import 'package:esun/infrastructure/features/domain/domain.dart';
 import 'package:esun/infrastructure/infraestructure.dart';
 
@@ -19,11 +20,12 @@ class RepositorioMapper {
     tt: json['tt'],
     archivoComprimido: List<String>.from(
       json['archivoComprimido'].map( 
-        (archivo) => archivo.startsWith('http')
-        ? 'https://cdn-icons-png.flaticon.com/512/17443/17443920.png'
-        : 'https://cdn-icons-png.flaticon.com/512/8629/8629976.png',
-        // ? archivo
-        // : '${ Environment.apiUrl }/files/repositorio/$archivo',
+        (image) => image.startsWith('http')
+        ? image
+        : '${ Environment.apiUrl }/files/repositorio/$image',
+        // (archivo) => archivo.startsWith('http')
+        // ? 'https://cdn-icons-png.flaticon.com/512/17443/17443920.png'
+        // : 'https://cdn-icons-png.flaticon.com/512/8629/8629976.png',
       )
     ),
     user: UserMapper.userJsonToEntity(json['user']) 

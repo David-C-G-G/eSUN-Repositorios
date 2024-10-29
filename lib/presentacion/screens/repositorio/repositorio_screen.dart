@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:esun/shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -33,11 +34,25 @@ class RepositorioScreen extends ConsumerWidget {
             title: const Text('Editar Repositorio'),
             actions: [
               IconButton(
-                onPressed: () {}, 
+                onPressed: () async {
+                  final photoPath = await CameraGalleryServiceImpl().selectPhoto();
+                  if(photoPath == null) return;
+
+                  ref.read(repositorioFormProvider(repositorioState.repositorio!).notifier)
+                    .updateProduct(photoPath);
+                  // photoPath;
+                }, 
                 icon: const Icon(Icons.file_upload)),
               IconButton(
-                onPressed: () {}, 
-                icon: const Icon(Icons.photo_library_outlined))
+                onPressed: () async {
+                  final photoPath = await CameraGalleryServiceImpl().takePhoto();
+                  if(photoPath == null) return;
+
+                  ref.read(repositorioFormProvider(repositorioState.repositorio!).notifier)
+                    .updateProduct(photoPath);
+                  // photoPath;
+                }, 
+                icon: const Icon(Icons.camera_alt_outlined))
             ],
           ),
           body: repositorioState.isLoading
