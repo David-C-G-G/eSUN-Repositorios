@@ -4,6 +4,7 @@
 import 'package:dio/dio.dart';
 import 'package:esun/config/config.dart';
 import 'package:esun/infrastructure/features/domain/domain.dart';
+import 'package:http_parser/http_parser.dart';
 
 import '../errors/repositorio_errors.dart';
 import '../mappers/repositorio_mapper.dart';
@@ -25,6 +26,50 @@ class RepositoriosDatasourceImpl extends RepositoriosDatasource{
     )
   );
 
+  // Se crea este metodo para subir una imagen
+  Future<String> _uploadFile(String path) async {
+
+    try {
+      final fileName = path.split('/').last;
+      final contentType = path.split('.').last;
+      final FormData data = FormData.fromMap({
+        'file':MultipartFile.fromFileSync(
+          path, 
+          filename: fileName,
+          contentType: MediaType('image', contentType),
+          ),
+      });
+
+      final response = await dio.post('/files/repositorio', data: data );
+      // print('Esto tiene mi response: ${response}');
+
+      return response.data['image'];
+    } catch (e) {
+      throw Exception();
+    }
+  }
+
+  // Se crea este método para las imagenes
+  Future<List<String>> _uploadPhotos(List<String> photos) async{
+
+    final photosToUpload = photos.where((element) => element.contains('/')).toList();
+    final photosToIgnore = photos.where((element) => !element.contains('/')).toList();
+
+    //Todo: crear una serie de Futures de carga de imégenes
+    final List<Future<String>> uploadJob = photosToUpload.map(_uploadFile).toList();
+    print('Estos tiene uploadJob: $uploadJob');
+
+    final newImages = await Future.wait(uploadJob);
+    print('esto tiene newImages: $newImages');
+    print('esto tiene photosToIgnore: $photosToIgnore');
+
+    // return[...photosToIgnore];
+    return[...photosToIgnore, ...newImages];
+
+  }
+
+
+
 
   @override
   Future<Repositorio> createUpdateRepositorio(Map<String, dynamic> repositorioLike) async {
@@ -35,6 +80,12 @@ class RepositoriosDatasourceImpl extends RepositoriosDatasource{
 
       // Elimina el ID del cuerpo antes de enviarlo al backend
       repositorioLike.remove('id');
+
+      //linea creada para mandar las imagenes
+      repositorioLike['archivoComprimido'] = await _uploadPhotos(repositorioLike['archivoComprimido']);
+
+      //?creo momentaneamente una interrupcion en mi código para no seguir ejecutando
+      // throw Exception();
 
 
       final response = await dio.request(
@@ -57,6 +108,8 @@ class RepositoriosDatasourceImpl extends RepositoriosDatasource{
     }
   }
 
+
+
   @override
   Future<Repositorio> getRepositorioById(String id) async {
     try {
@@ -71,6 +124,8 @@ class RepositoriosDatasourceImpl extends RepositoriosDatasource{
     }
   }
 
+
+
   @override
   Future<List<Repositorio>> getRepositoriosByPage({int limiteEntidades = 10, int pagina = 0}) async {
     final response = await dio.get<List>('/repositorio?limite_entidades=$limiteEntidades&pagina=$pagina');
@@ -82,6 +137,8 @@ class RepositoriosDatasourceImpl extends RepositoriosDatasource{
 
     return repositorios;
   }
+
+
 
   @override
   Future<Repositorio> searchRepositorioByTerm(String term) {
