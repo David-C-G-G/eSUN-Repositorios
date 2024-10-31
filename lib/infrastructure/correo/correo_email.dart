@@ -20,9 +20,10 @@ class EmailSender{
       .. recipients.add(email)
       ..subject = 'Mail'
       ..text = '''
-      Registrado correctamente!
-      $usuario Bienvenido(a) a la aplicación movil eSUN
-      deseamos que esta herramienta te sea de mucha ayuda! :D
+      Registrado(a) correctamente!
+
+        $usuario bienvenido(a) a la aplicación movil eSUN,
+        deseamos que esta herramienta te sea de mucha ayuda! :D
 
       atte: LeadingSoftware
       ''';

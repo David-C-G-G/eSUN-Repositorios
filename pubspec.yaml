@@ -37,6 +37,7 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^8.1.6
   flutter_dotenv: ^5.1.0
+  flutter_native_splash: ^2.4.1
   flutter_riverpod: ^2.5.3
   flutter_staggered_grid_view: ^0.7.0
   formz: ^0.7.0
@@ -47,6 +48,19 @@ dependencies:
   mailer: 6.2.0
   resend: ^1.0.0
   shared_preferences: ^2.3.2
+
+  #Run commands to generate splash screen
+  # 1) flutter clean
+  # 2) flutter pub get
+  # 3) flutter pub run flutter_native_splash:create
+
+flutter_native_splash:
+  android: true
+  ios: true
+  web: false
+
+  background_image: "assets/background.png"
+  image: "assets/icono_upscaled.png"
 
 dev_dependencies:
   flutter_lints: ^3.0.2
