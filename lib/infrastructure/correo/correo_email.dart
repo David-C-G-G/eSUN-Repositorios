@@ -19,14 +19,7 @@ class EmailSender{
       ..from = Address(username, 'LeadingSoftware')
       .. recipients.add(email)
       ..subject = 'Mail'
-      ..text = '''
-      Registrado(a) correctamente!
-
-        $usuario bienvenido(a) a la aplicación movil eSUN,
-        deseamos que esta herramienta te sea de mucha ayuda! :D
-
-      atte: LeadingSoftware
-      ''';
+      ..text = 'Registrado(a) correctamente! $usuario bienvenido(a) a la aplicación movil eSUN, deseamos que esta herramienta te sea de mucha ayuda! :D atte: LeadingSoftware';
 
     try {
       await send(messagedata, smtpServer);
