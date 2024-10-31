@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:esun/shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -24,39 +27,60 @@ class RepositorioScreen extends ConsumerWidget {
 
     final repositorioState = ref.watch( repositorioProvider(repositorioId));
 
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('Editar Repositorio'),
-          actions: [
-            IconButton(
-              onPressed: () {}, 
-              icon: const Icon(Icons.file_upload))
-          ],
-        ),
-        body: repositorioState.isLoading
-          ? const FullScreenLoader()
-          : ListView(
-            children: [
-              const SizedBox(height: 10),
-              _RepositorioView(repositorio: repositorioState.repositorio!),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Editar Repositorio'),
+            actions: [
+              IconButton(
+                onPressed: () async {
+                  final photoPath = await CameraGalleryServiceImpl().selectPhoto();
+                  if(photoPath == null) return;
+
+                  ref.read(repositorioFormProvider(repositorioState.repositorio!).notifier)
+                    .updateProduct(photoPath);
+                  // photoPath;
+                }, 
+                icon: const Icon(Icons.file_upload)),
+              IconButton(
+                onPressed: () async {
+                  final photoPath = await CameraGalleryServiceImpl().takePhoto();
+                  if(photoPath == null) return;
+
+                  ref.read(repositorioFormProvider(repositorioState.repositorio!).notifier)
+                    .updateProduct(photoPath);
+                  // photoPath;
+                }, 
+                icon: const Icon(Icons.camera_alt_outlined))
             ],
           ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
+          body: repositorioState.isLoading
+            ? const FullScreenLoader()
+            : ListView(
+              children: [
+                const SizedBox(height: 10),
+                _RepositorioView(repositorio: repositorioState.repositorio!),
+              ],
+            ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
 
-            if (repositorioState.repositorio == null) return;
-
-            ref.read(
-              repositorioFormProvider(repositorioState.repositorio!).notifier
-            ).onRepositorioFormSubmit()
-              .then((value){
-                if(!value) return;
-                showSnackbar(context);
-              });
-          },
-          child: const Icon(Icons.save_as_outlined),
+              FocusScope.of(context).unfocus();
+              if (repositorioState.repositorio == null) return;
+      
+              ref.read(
+                repositorioFormProvider(repositorioState.repositorio!).notifier
+              ).onRepositorioFormSubmit()
+                .then((value){
+                  if(!value) return;
+                  showSnackbar(context);
+                });
+            },
+            child: const Icon(Icons.save_as_outlined),
+          ),
         ),
-      );
+    );
   }
 }
 
@@ -162,21 +186,37 @@ class _ArchivoGallery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    if( archivos.isEmpty ){
+      return ClipRRect(
+        borderRadius: const BorderRadius.all(Radius.circular(20)),
+        child: Image.asset('assets/no-image.png', fit: BoxFit.cover,),
+      );
+    }
+
+
     return PageView(
       scrollDirection: Axis.horizontal,
       controller: PageController(viewportFraction: 0.7),
-      children: archivos.isEmpty
-          ? [
-              ClipRRect(
+      children: archivos.map((item) {
+
+              late ImageProvider imageProvider;
+
+              if(item.startsWith('http')){
+                imageProvider = NetworkImage(item);
+              }else{
+                imageProvider = FileImage(File(item));
+              }
+
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(20)),
-                  child: Image.asset('assets/no-image.png', fit: BoxFit.cover))
-            ]
-          : archivos.map((e) {
-              return ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(20)),
-                child: Image.network(
-                  e,
-                  fit: BoxFit.cover,
+                  child: FadeInImage(
+                    fit: BoxFit.cover,
+                    image: imageProvider,
+                    placeholder: const AssetImage('assets/bottle-loader.gif'), 
+                  )
                 ),
               );
             }).toList(),

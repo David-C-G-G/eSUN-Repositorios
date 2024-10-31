@@ -49,7 +49,7 @@ class RepositorioFormNotifier extends StateNotifier<RepositorioFormState> {
     if(onSubmitCallback == null) return false;
 
     final repositorioLike = {
-      'id': state.id,
+      'id': (state.id == 'new') ? null : state.id,
       'title': state.title.value,
       'docente': state.docente.value,
       'materia': state.materia.value,
@@ -57,7 +57,7 @@ class RepositorioFormNotifier extends StateNotifier<RepositorioFormState> {
       'anotacion': state.anotacion,
       'comentario': state.comentario,
       'archivoComprimido': state.archivoComprimido.map(
-        (archivo) => archivo.replaceAll('${ Environment.apiUrl}/files/repositorio', '')
+        (image) => image.replaceAll('${ Environment.apiUrl }/files/repositorio','')
       ).toList(),
       'tt': state.tt.value
     };
@@ -78,6 +78,13 @@ class RepositorioFormNotifier extends StateNotifier<RepositorioFormState> {
         Materia.dirty(value: state.materia.value),
         TipoTrabajo.dirty(value: state.tt.value),
       ])
+    );
+  }
+
+  // archivo Creado para imagenes
+  void updateProduct(String path){
+    state = state.copyWith(
+      archivoComprimido: [...state.archivoComprimido, path]
     );
   }
 

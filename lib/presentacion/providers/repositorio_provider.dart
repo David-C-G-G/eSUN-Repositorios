@@ -9,7 +9,10 @@ final repositorioProvider = StateNotifierProvider.autoDispose.family<Repositorio
 
   final repositoriosRepository = ref.watch(repositoriosRepositoryProvider);
 
-  return RepositorioNotifier(repositoriosRepository: repositoriosRepository, repositorioId: repositorioId);
+  return RepositorioNotifier(
+    repositoriosRepository: repositoriosRepository, 
+    repositorioId: repositorioId
+  );
 });
 
 class RepositorioNotifier extends StateNotifier<RepositorioState> {
@@ -24,9 +27,32 @@ class RepositorioNotifier extends StateNotifier<RepositorioState> {
     loadRepositorio();
   }
 
+  Repositorio newEmptyRepositorio(){
+    return Repositorio(
+      id: 'new', 
+      title: '', 
+      docente: '', 
+      materia: '', 
+      seccion: 0, 
+      anotacion: '', 
+      comentario: '', 
+      tt: 'tarea', 
+      archivoComprimido: [], 
+    );
+  }
+
   Future<void> loadRepositorio() async {
 
     try {
+
+      if(state.id == 'new'){
+        state = state.copyWith(
+          isLoading: false,
+          repositorio: newEmptyRepositorio(),
+        );
+        return;
+      }
+
       final repositorio = await repositoriosRepository.getRepositorioById(state.id);
       state = state.copyWith(
         isLoading: false,

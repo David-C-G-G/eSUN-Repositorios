@@ -66,7 +66,7 @@ class _CustomOptions extends ConsumerWidget {
           CustomButton(
             texto: 'Crear Repositorio',
             onTap: () {
-              context.push('/createRepositorio');
+              context.push('/repositorio/new');
             },
           ),
           

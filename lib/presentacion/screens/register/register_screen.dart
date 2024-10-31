@@ -69,6 +69,9 @@ class _RegisterFormField extends ConsumerStatefulWidget {
 
 class _RegisterFormFieldState extends ConsumerState<_RegisterFormField> {
 
+  // Estado para menjar la visibilidad de la contraseña
+  bool _obscurePassword = true;
+
   void showSnackbar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context)
@@ -114,9 +117,22 @@ class _RegisterFormFieldState extends ConsumerState<_RegisterFormField> {
           CustomFormField(
             label: 'password ',
             hint: 'password',
-            obscureText: true,
+            obscureText: _obscurePassword,
             onChanged: ref.read(registerFormProvider.notifier).onPasswordRegisterChange,
             prefixIcon: const Icon(Icons.password_outlined),
+            suffixIcon: IconButton(
+              iconSize: 25,
+              alignment: Alignment.center,
+              icon: Icon(
+                _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                color: Colors.grey, 
+              ),
+              onPressed: (){
+                setState(() {
+                  _obscurePassword = !_obscurePassword;
+                });
+              },
+            ),
             errorMsg: registerForm.isRegisterFormPosted ? registerForm.password.errorMessage : null,
           ),
           const SizedBox(
@@ -197,10 +213,12 @@ class __IsDocenteState extends ConsumerState<_IsDocente> {
             width: size.width,
             child: CustomFormField(
               label: 'Cédula profesional',
+              hint: 'Cédula profesional',
               onChanged: ref.read(registerFormProvider.notifier).onCedulaRegisterChange,
               errorMsg: registerCedulaForm.isRegisterFormPosted
                 ? registerCedulaForm.cedula.errorMessage
                 : null,
+              prefixIcon: const Icon(Icons.verified_user_outlined),
             ),
           ),
       ],

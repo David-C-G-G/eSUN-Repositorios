@@ -11,6 +11,7 @@ class CustomFormField extends StatelessWidget {
   final Function(String)? onChanged;
   final String? Function(String?)? validator;
   final Widget? prefixIcon;
+  final Widget? suffixIcon;
 
   const CustomFormField({
     super.key,
@@ -22,6 +23,7 @@ class CustomFormField extends StatelessWidget {
     this.onChanged,
     this.validator,
     this.prefixIcon,
+    this.suffixIcon,
   });
 
   @override
@@ -38,6 +40,8 @@ class CustomFormField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
+          alignment: Alignment.center,
+          height: 50, // altura del formulario
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: const BorderRadius.only(
@@ -71,6 +75,7 @@ class CustomFormField extends StatelessWidget {
               hintStyle: const TextStyle(color: Colors.grey),
               focusColor: colors.primary,
               prefixIcon: prefixIcon,
+              suffixIcon: suffixIcon,
               errorText: null,
               errorBorder: border.copyWith(
                 borderSide: const BorderSide(color: Colors.transparent),
